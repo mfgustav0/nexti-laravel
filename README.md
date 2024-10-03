@@ -23,13 +23,6 @@ You can install the package via composer:
 composer require mfgustav0/nexti-laravel
 ```
 
-You can publish and run the migrations with:
-
-```bash
-php artisan vendor:publish --tag="nexti-laravel-migrations"
-php artisan migrate
-```
-
 You can publish the config file with:
 
 ```bash
@@ -40,20 +33,16 @@ This is the contents of the published config file:
 
 ```php
 return [
+    'client_id' => env('NEXTI_CLIENT_ID'),
+    'client_secret' => env('NEXTI_SECRET'),
 ];
-```
-
-Optionally, you can publish the views using
-
-```bash
-php artisan vendor:publish --tag="nexti-laravel-views"
 ```
 
 ## Usage
 
 ```php
-$nexti = new Mfgustav0\Nexti();
-echo $nexti->echoPhrase('Hello, Mfgustav0/Nexti!');
+$nexti = new Mfgustav0\Nexti\Client('client_id', 'client_secret');
+echo $nexti->city()->getAllCities();
 ```
 
 ## Testing
