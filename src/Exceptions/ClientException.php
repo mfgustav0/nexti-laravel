@@ -3,6 +3,7 @@
 namespace Mfgustav0\Nexti\Exceptions;
 
 use Exception;
+use Illuminate\Http\Client\RequestException;
 
 class ClientException extends Exception
 {
@@ -23,10 +24,12 @@ class ClientException extends Exception
     }
 
     /**
-     * Conflict Entity
+     * From Request Exception
      */
-    public static function conflictEntity(array $response): static
+    public static function fromRequestException(RequestException $exception): static
     {
+        $response = $exception->response->json();
+
         $message = [
             $response['message'] ?? null,
         ];
@@ -39,6 +42,9 @@ class ClientException extends Exception
             }
         }
 
-        return new static($message ? implode('; ', $message) : 'Conflict Entity', 409);
+        return new static(
+            message: $message ? implode('; ', $message) : $exception->response->reason(),
+            code: $exception->getCode()
+        );
     }
 }

@@ -131,11 +131,7 @@ class Client
                             return true;
                         }
 
-                        if ($exception->getCode() === 409) {
-                            throw ClientException::conflictEntity($exception->response->json());
-                        }
-
-                        dd($exception->response->status(), $exception->response->getBody()->getContents());
+                        throw ClientException::fromRequestException($exception);
                     }
 
                     return $exception instanceof ConnectionException;
